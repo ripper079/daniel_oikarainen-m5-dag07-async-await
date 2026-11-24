@@ -27,14 +27,27 @@ export async function hamtaRattEllerNull(id: number): Promise<Ratt | null> {
   }
 }
 
+//Kommentar 4 och 5
+// Parallelt: Båda anropen startas direkt och väntar samtidigt
+// Så teoretiskt borde den vara dubbelt så snabb
+
 // 4. Hämta två rätter EFTER varandra (await, sedan await). Returnerar [ratt1, ratt2]. ms är väntetiden per anrop.
 export async function hamtaTvaRatterEfterVarandra(id1: number, id2: number, ms: number = 100): Promise<Ratt[]> {
   // TODO
+  const rattEtt = await hamtaRattFranServer(id1, ms);
+  const rattTva = await hamtaRattFranServer(id2, ms);
+
+  return [rattEtt, rattTva];
 }
 
 // 5. Samma sak, men båda ANROPEN startas samtidigt (Promise.all). Ska gå dubbelt så snabbt.
 export async function hamtaTvaRatterParallellt(id1: number, id2: number, ms: number = 100): Promise<Ratt[]> {
   // TODO
+
+  return await Promise.all([
+    hamtaRattFranServer(id1, ms),
+    hamtaRattFranServer(id2, ms),
+  ]);
 }
 
 // 6. Försök upp till maxForsok gånger. anropFn är en funktion som returnerar en promise.
